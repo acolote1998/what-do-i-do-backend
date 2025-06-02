@@ -11,11 +11,13 @@ spring:
     username: aki
     password: aki
     driver-class-name: org.postgresql.Driver
-    jpa:
-      hibernate:
-        ddl-auto: create-drop
-      defer-datasource-initialization: true
-    sql:
-      init:
-        platform: postgresql
-        mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      platform: postgresql
+      mode: always
