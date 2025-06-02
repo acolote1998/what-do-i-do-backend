@@ -2,6 +2,6 @@ package com.aki.what_do_i_do_backend.web;
 
 import java.util.UUID;
 
-public record DecisionResponseDto(UUID id, String title, String description, Boolean open, String optionOne,
-                                  String optionTwo, String[] votersOne, String[] votersTwo) {
+public record DecisionResponseDto(UUID id, String title, String description, Boolean open, String option1,
+                                  String option2, String[] users_votes_1, String[] users_votes_2) {
 }
