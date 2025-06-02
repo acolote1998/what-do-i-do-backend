@@ -14,4 +14,7 @@ public class Decision {
     String title;
     @Column
     String description;
+    
+    @Column
+    Boolean open;
 }
