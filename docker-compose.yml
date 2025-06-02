@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: 'postgres:15'
+    container_name: 'whatdoido-postgres-container'
+    environment:
+      - POSTGRES_USER=aki
+      - POSTGRES_PASSWORD=aki
+      - POSTGRES_DB=whatdoidodb
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aki@aki.com
+      PGADMIN_DEFAULT_PASSWORD: aki
+    ports:
+      - "5433:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: always
+
+volumes:
+  pgadmin_data:
+
