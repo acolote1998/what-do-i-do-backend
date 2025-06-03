@@ -4,10 +4,12 @@ import com.aki.what_do_i_do_backend.model.Decision;
 import com.aki.what_do_i_do_backend.model.Vote;
 import com.aki.what_do_i_do_backend.repository.DecisionsRepository;
 import com.aki.what_do_i_do_backend.web.DecisionResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,22 +52,30 @@ public class DecisionsService {
                 .toList();
     }
 
-    public DecisionResponseDto getDecisionByOwnerAndId(String ownerId, String decisionId) {
-        Decision decision = decisionsRepository.findByOwnerIdAndId(ownerId, UUID.fromString(decisionId));
-        return new DecisionResponseDto(decision.getId(),
-                decision.getTitle(),
-                decision.getDescription(),
-                decision.getOpen(),
-                decision.getOptions().get(0).getOptionName(),
-                decision.getOptions().get(1).getOptionName(),
-                decision.getOptions().get(0).getVotes()
+    public DecisionResponseDto getDecisionById(String decisionId) {
+        Decision d = decisionsRepository.findById(UUID.fromString(decisionId))
+                .orElseThrow(() -> new EntityNotFoundException("Decision not found"));
+
+        if (d.getOptions().size() < 2) {
+            throw new IllegalStateException("Decision must have at least 2 options");
+        }
+
+        return new DecisionResponseDto(
+                d.getId(),
+                d.getTitle(),
+                d.getDescription(),
+                d.getOpen(),
+                d.getOptions().get(0).getOptionName(),
+                d.getOptions().get(1).getOptionName(),
+                d.getOptions().get(0).getVotes()
                         .stream()
                         .map(Vote::getUserId)
                         .toArray(String[]::new),
-                decision.getOptions().get(1).getVotes()
+                d.getOptions().get(1).getVotes()
                         .stream()
                         .map(Vote::getUserId)
-                        .toArray(String[]::new));
+                        .toArray(String[]::new)
+        );
     }
 
     public List<DecisionResponseDto> getThreeRandomDecisions() {

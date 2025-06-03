@@ -18,7 +18,7 @@ public class DecisionsSecurity {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/decisions/random").permitAll()
                         .requestMatchers("/decisions").authenticated()
-                        .requestMatchers("/decisions/*").authenticated()
+                        .requestMatchers("/decisions/*").permitAll()
 
                 )
                 .cors(withDefaults())

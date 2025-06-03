@@ -29,9 +29,8 @@ public class Controller {
     }
 
     @GetMapping("/{decisionId}")
-    ResponseEntity<DecisionResponseDto> getById(@AuthenticationPrincipal Jwt jwt, @PathVariable String decisionId) {
-        String decisionOwner = jwt.getSubject();
-        return ResponseEntity.ok(service.getDecisionByOwnerAndId(decisionOwner, decisionId));
+    ResponseEntity<DecisionResponseDto> getById(@PathVariable String decisionId) {
+        return ResponseEntity.ok(service.getDecisionById(decisionId));
     }
 
     @GetMapping("/random")
