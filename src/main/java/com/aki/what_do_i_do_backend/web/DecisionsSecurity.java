@@ -1,0 +1,26 @@
+package com.aki.what_do_i_do_backend.web;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@Configuration
+@EnableWebSecurity
+public class DecisionsSecurity {
+    @Bean
+    public SecurityFilterChain securityFilter(HttpSecurity http) throws Exception {
+        http
+                .csrf((crsf -> crsf.disable()))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/decisions").authenticated()
+                )
+                .cors(withDefaults())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
+        return http.build();
+    }
+
+}

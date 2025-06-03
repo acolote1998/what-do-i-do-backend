@@ -12,9 +12,33 @@ public class Vote {
     UUID uuid;
 
     @Column
-    String user_id;
+    String userId;
 
     @ManyToOne
     @JoinColumn(name = "option_id")
     Option option;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Option getOption() {
+        return option;
+    }
+
+    public void setOption(Option option) {
+        this.option = option;
+    }
 }
