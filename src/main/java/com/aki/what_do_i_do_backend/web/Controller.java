@@ -1,5 +1,6 @@
 package com.aki.what_do_i_do_backend.web;
 
+import com.aki.what_do_i_do_backend.model.Decision;
 import com.aki.what_do_i_do_backend.service.DecisionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,5 +44,12 @@ public class Controller {
     ResponseEntity<Void> deleteById(@PathVariable String decisionId) {
         service.deleteDecision(decisionId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    ResponseEntity<Void> createDecision(@AuthenticationPrincipal Jwt jwt, @RequestBody DecisionRequestDto decisionBody) {
+        String decisionOwner = jwt.getSubject();
+        Decision createdDecision = service.createDecision(decisionOwner, decisionBody);
+        return ResponseEntity.created(URI.create("/decisions/" + createdDecision.getId())).build();
     }
 }

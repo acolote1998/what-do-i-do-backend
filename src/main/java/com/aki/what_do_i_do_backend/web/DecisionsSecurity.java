@@ -2,6 +2,7 @@ package com.aki.what_do_i_do_backend.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,6 +19,7 @@ public class DecisionsSecurity {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/decisions/random").permitAll()
                         .requestMatchers("/decisions").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/decisions").authenticated()
                         .requestMatchers("/decisions/*").permitAll()
 
                 )

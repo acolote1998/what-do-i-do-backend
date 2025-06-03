@@ -1,13 +1,17 @@
 package com.aki.what_do_i_do_backend.service;
 
 import com.aki.what_do_i_do_backend.model.Decision;
+import com.aki.what_do_i_do_backend.model.Option;
 import com.aki.what_do_i_do_backend.model.Vote;
 import com.aki.what_do_i_do_backend.repository.DecisionsRepository;
+import com.aki.what_do_i_do_backend.web.DecisionRequestDto;
 import com.aki.what_do_i_do_backend.web.DecisionResponseDto;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +32,28 @@ public class DecisionsService {
 
     public void setDecisionsRepository(DecisionsRepository decisionsRepository) {
         this.decisionsRepository = decisionsRepository;
+    }
+
+    @Transactional
+    public Decision createDecision(String ownerId, DecisionRequestDto decisionToCreate) {
+        Decision decision = new Decision();
+        decision.setDescription(decisionToCreate.description());
+        decision.setOpen(decisionToCreate.open());
+        //
+        Option option1 = new Option();
+        option1.setDecision(decision);
+        option1.setOptionName(decisionToCreate.option1());
+        option1.setVotes(new ArrayList<>());
+        //
+        Option option2 = new Option();
+        option2.setDecision(decision);
+        option2.setOptionName(decisionToCreate.option2());
+        option2.setVotes(new ArrayList<>());
+        //
+        decision.setOptions(List.of(option1, option2));
+        decision.setOwnerId(ownerId);
+        decision.setTitle(decisionToCreate.title());
+        return decisionsRepository.save(decision);
     }
 
     public List<DecisionResponseDto> getAllDecisionsByOwner(String ownerId) {
