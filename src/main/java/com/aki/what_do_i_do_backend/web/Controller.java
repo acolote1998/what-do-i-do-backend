@@ -32,4 +32,9 @@ public class Controller {
         String decisionOwner = jwt.getSubject();
         return ResponseEntity.ok(service.getDecisionByOwnerAndId(decisionOwner, decisionId));
     }
+
+    @GetMapping("/random")
+    ResponseEntity<List<DecisionResponseDto>> getThreeRandomDecisions() {
+        return ResponseEntity.ok(service.getThreeRandomDecisions());
+    }
 }

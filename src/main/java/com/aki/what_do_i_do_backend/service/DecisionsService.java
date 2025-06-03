@@ -67,4 +67,26 @@ public class DecisionsService {
                         .map(Vote::getUserId)
                         .toArray(String[]::new));
     }
+
+    public List<DecisionResponseDto> getThreeRandomDecisions() {
+        List<Decision> decisions = decisionsRepository.findRandomDecisions();
+        return decisions
+                .stream()
+                .map(decision ->
+                        new DecisionResponseDto(decision.getId(),
+                                decision.getTitle(),
+                                decision.getDescription(),
+                                decision.getOpen(),
+                                decision.getOptions().get(0).getOptionName(),
+                                decision.getOptions().get(1).getOptionName(),
+                                decision.getOptions().get(0).getVotes()
+                                        .stream()
+                                        .map(Vote::getUserId)
+                                        .toArray(String[]::new),
+                                decision.getOptions().get(1).getVotes()
+                                        .stream()
+                                        .map(Vote::getUserId)
+                                        .toArray(String[]::new)))
+                .toList();
+    }
 }
