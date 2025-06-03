@@ -89,4 +89,10 @@ public class DecisionsService {
                                         .toArray(String[]::new)))
                 .toList();
     }
+
+    public void deleteDecision(String decisionId) {
+        if (decisionsRepository.existsById(UUID.fromString(decisionId))) {
+            decisionsRepository.deleteById(UUID.fromString(decisionId));
+        }
+    }
 }

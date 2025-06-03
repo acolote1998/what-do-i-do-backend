@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -36,5 +37,11 @@ public class Controller {
     @GetMapping("/random")
     ResponseEntity<List<DecisionResponseDto>> getThreeRandomDecisions() {
         return ResponseEntity.ok(service.getThreeRandomDecisions());
+    }
+
+    @DeleteMapping("/{decisionId}")
+    ResponseEntity<Void> deleteById(@PathVariable String decisionId) {
+        service.deleteDecision(decisionId);
+        return ResponseEntity.noContent().build();
     }
 }
