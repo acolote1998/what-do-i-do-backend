@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface DecisionsRepository extends ListCrudRepository<Decision, UUID> {
     List<Decision> getAllByOwnerId(String ownerId);
+
+    Decision findByOwnerIdAndId(String ownerId, UUID id);
 }

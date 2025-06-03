@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DecisionsService {
@@ -47,5 +48,23 @@ public class DecisionsService {
                                         .map(Vote::getUserId)
                                         .toArray(String[]::new)))
                 .toList();
+    }
+
+    public DecisionResponseDto getDecisionByOwnerAndId(String ownerId, String decisionId) {
+        Decision decision = decisionsRepository.findByOwnerIdAndId(ownerId, UUID.fromString(decisionId));
+        return new DecisionResponseDto(decision.getId(),
+                decision.getTitle(),
+                decision.getDescription(),
+                decision.getOpen(),
+                decision.getOptions().get(0).getOptionName(),
+                decision.getOptions().get(1).getOptionName(),
+                decision.getOptions().get(0).getVotes()
+                        .stream()
+                        .map(Vote::getUserId)
+                        .toArray(String[]::new),
+                decision.getOptions().get(1).getVotes()
+                        .stream()
+                        .map(Vote::getUserId)
+                        .toArray(String[]::new));
     }
 }

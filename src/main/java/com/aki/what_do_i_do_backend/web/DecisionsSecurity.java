@@ -17,6 +17,7 @@ public class DecisionsSecurity {
                 .csrf((crsf -> crsf.disable()))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/decisions").authenticated()
+                        .requestMatchers("/decisions/*").authenticated()
                 )
                 .cors(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));

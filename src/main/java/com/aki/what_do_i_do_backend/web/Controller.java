@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,12 @@ public class Controller {
     @GetMapping
     ResponseEntity<List<DecisionResponseDto>> getAll(@AuthenticationPrincipal Jwt jwt) {
         String decisionOwner = jwt.getSubject();
-        Object test = ResponseEntity.ok(service.getAllDecisionsByOwner(decisionOwner));
         return ResponseEntity.ok(service.getAllDecisionsByOwner(decisionOwner));
+    }
+
+    @GetMapping("/{decisionId}")
+    ResponseEntity<DecisionResponseDto> getById(@AuthenticationPrincipal Jwt jwt, @PathVariable String decisionId) {
+        String decisionOwner = jwt.getSubject();
+        return ResponseEntity.ok(service.getDecisionByOwnerAndId(decisionOwner, decisionId));
     }
 }
