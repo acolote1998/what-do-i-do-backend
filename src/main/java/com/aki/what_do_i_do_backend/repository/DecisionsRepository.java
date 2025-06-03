@@ -17,4 +17,5 @@ public interface DecisionsRepository extends ListCrudRepository<Decision, UUID> 
     @Query(value = "SELECT * FROM decisions ORDER BY RANDOM() LIMIT 3", nativeQuery = true)
     List<Decision> findRandomDecisions();
 
+    Decision getDecisionById(UUID id);
 }

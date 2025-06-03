@@ -6,6 +6,7 @@ import com.aki.what_do_i_do_backend.model.Vote;
 import com.aki.what_do_i_do_backend.repository.DecisionsRepository;
 import com.aki.what_do_i_do_backend.web.DecisionRequestDto;
 import com.aki.what_do_i_do_backend.web.DecisionResponseDto;
+import com.aki.what_do_i_do_backend.web.VoteRequestDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,5 +131,28 @@ public class DecisionsService {
         if (decisionsRepository.existsById(UUID.fromString(decisionId))) {
             decisionsRepository.deleteById(UUID.fromString(decisionId));
         }
+    }
+
+    @Transactional
+    public void createVote(String voterId, VoteRequestDto voteBody) {
+        Decision decisionToVoteIn = decisionsRepository
+                .getDecisionById(
+                        UUID.fromString(
+                                voteBody.decisionId()));
+        Option optionToBeVoted = decisionToVoteIn.getOptions().get(voteBody.whichToVote());
+        optionToBeVoted
+                .getVotes()
+                .stream()
+                .filter(vote -> vote
+                        .getUserId().equals(voterId))
+                .findFirst()
+                .ifPresent(vote -> {
+                    throw new IllegalArgumentException("This user has already voted in this decision");
+                });
+        Vote voteToAdd = new Vote();
+        voteToAdd.setOption(optionToBeVoted);
+        voteToAdd.setUserId(voterId);
+        optionToBeVoted.getVotes().add(voteToAdd);
+        decisionsRepository.save(decisionToVoteIn);
     }
 }

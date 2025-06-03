@@ -52,4 +52,11 @@ public class Controller {
         Decision createdDecision = service.createDecision(decisionOwner, decisionBody);
         return ResponseEntity.created(URI.create("/decisions/" + createdDecision.getId())).build();
     }
+
+    @PostMapping("/vote")
+    ResponseEntity<Void> createVote(@AuthenticationPrincipal Jwt jwt, @RequestBody VoteRequestDto voteBody) {
+        String voterId = jwt.getSubject();
+        service.createVote(voterId, voteBody);
+        return ResponseEntity.ok().build();
+    }
 }
