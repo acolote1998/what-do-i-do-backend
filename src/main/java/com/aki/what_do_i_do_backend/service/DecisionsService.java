@@ -136,23 +136,24 @@ public class DecisionsService {
     @Transactional
     public void createVote(String voterId, VoteRequestDto voteBody) {
         Decision decisionToVoteIn = decisionsRepository
-                .getDecisionById(
-                        UUID.fromString(
-                                voteBody.decisionId()));
+                .getDecisionById(UUID.fromString(voteBody.decisionId()));
+
+        boolean hasVoted = decisionToVoteIn.getOptions().stream()
+                .flatMap(option -> option.getVotes().stream())
+                .anyMatch(vote -> vote.getUserId().equals(voterId));
+
+        if (hasVoted) {
+            throw new IllegalArgumentException("This user has already voted in this decision");
+        }
+
         Option optionToBeVoted = decisionToVoteIn.getOptions().get(voteBody.whichToVote());
-        optionToBeVoted
-                .getVotes()
-                .stream()
-                .filter(vote -> vote
-                        .getUserId().equals(voterId))
-                .findFirst()
-                .ifPresent(vote -> {
-                    throw new IllegalArgumentException("This user has already voted in this decision");
-                });
+
         Vote voteToAdd = new Vote();
         voteToAdd.setOption(optionToBeVoted);
         voteToAdd.setUserId(voterId);
+
         optionToBeVoted.getVotes().add(voteToAdd);
         decisionsRepository.save(decisionToVoteIn);
     }
+
 }

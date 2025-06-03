@@ -19,8 +19,8 @@ public class DecisionsSecurity {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/decisions/random").permitAll()
                         .requestMatchers("/decisions").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/decisions").authenticated()
                         .requestMatchers(HttpMethod.POST, "/decisions/vote").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/decisions").authenticated()
                         .requestMatchers("/decisions/*").permitAll()
 
                 )
