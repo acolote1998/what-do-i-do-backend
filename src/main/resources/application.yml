@@ -1,6 +1,6 @@
 spring:
   application:
-    name: life-line-back-end
+    name: what-do-i-do-backend
   security:
     oauth2:
       resourceserver:
