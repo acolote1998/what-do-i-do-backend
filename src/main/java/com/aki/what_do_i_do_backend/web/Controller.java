@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/decisions")
+@RequestMapping(value = {"/decisions", "/decisions/"})
 public class Controller {
 
     DecisionsService service;
