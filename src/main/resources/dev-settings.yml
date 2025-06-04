@@ -5,11 +5,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${JWT_PROVIDER_URI}
+          issuer-uri: https://comic-vulture-37.clerk.accounts.dev
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:postgresql://localhost:5432/whatdoidodb
+    username: aki
+    password: aki
     driver-class-name: org.postgresql.Driver
 
   jpa:
