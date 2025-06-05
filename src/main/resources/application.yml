@@ -17,10 +17,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
+      ddl-auto: create #create or create-drop
+    defer-datasource-initialization: true #true for data seeding
 
   sql:
     init:
       platform: postgresql
-      mode: always
+      mode: always #always for data seeding
